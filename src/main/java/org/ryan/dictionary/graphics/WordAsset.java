@@ -1,0 +1,93 @@
+package org.ryan.dictionary.graphics;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.java.Log;
+import org.ryan.dictionary.api.WordData;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@AllArgsConstructor
+@Getter
+@Log
+public class WordAsset {
+
+    final Font FONT = new Font("Times New Roman", Font.PLAIN, 18);
+    final int LINE_SPACING = 10;
+    static int CHARS_PER_LINE = 130;
+
+    int x, y;
+    WordData data;
+
+    public static List<String> wrap(String text) {
+        List<String> lines = new ArrayList<>(List.of(""));
+        for (String word : text.split(" ")) {
+            int last = lines.size() - 1;
+            int lineSize = lines.get(last).length();
+            if (lineSize + word.length() + 1 < CHARS_PER_LINE) {
+                lines.set(last, lines.get(last) + word + " ");
+            } else {
+                lines.add(word + " ");
+            }
+        }
+        return lines;
+    }
+
+    public void paint(Graphics g) {
+        int realY = y - Application.yOffset;
+        int realX = x - Application.xOffset;
+        int lines = 0;
+
+        g.setFont(FONT);
+        g.setColor(Color.GREEN);
+        FontMetrics metrics = g.getFontMetrics(FONT);
+        int height = metrics.getHeight();
+
+        String word = data.getWord();
+        WordData.Phonetic[] phonetics = data.getPhonetics();
+        WordData.Meaning[] meanings = data.getMeanings();
+
+        g.drawString(word, realX, realY); //Word
+        lines++;
+
+        for (WordData.Phonetic phonetic : phonetics) {
+            g.drawString(String.format("%s", phonetic.getText()), realX, realY + (height + LINE_SPACING) * lines++); //Phonetic
+        }
+
+        for (int i = 0; i < meanings.length; i++) {
+            g.drawString(String.format("", i + 1), realX, realY + (height + LINE_SPACING) * lines++);
+            g.setFont(new Font("Times New Roman", Font.ITALIC, 18));
+            g.drawString(String.format("%s", meanings[i].getPartOfSpeech()), realX, realY + (height + LINE_SPACING) * lines++); //Part of Speech
+            g.setFont(FONT);
+
+            WordData.Definition[] definitions = meanings[i].getDefinitions();
+            for (int j = 0; j < definitions.length; j++) {
+                g.drawString(String.format("%d. ", j + 1), realX + 25, realY + (height + LINE_SPACING) * lines++); //Numbers
+
+                List<String> wraps = wrap(definitions[j].getDefinition());
+                g.drawString(String.format("%s", wraps.remove(0)), realX + 65, realY + (height + LINE_SPACING) * lines++);
+                for (String line : wraps) {
+                    g.drawString(line, realX + 65, realY + (height + LINE_SPACING) * lines++); //Definition
+                }
+
+                if (definitions[j].getExample() != null) {
+                    wraps = wrap("\"%s\"".formatted(definitions[j].getExample()));
+                    g.drawString(wraps.remove(0), realX + 65, realY + (height + LINE_SPACING) * lines++);
+                    for (String line : wraps) {
+                        g.drawString(line, realX + 65, realY + (height + LINE_SPACING) * lines++); //Example
+                    }
+                }
+
+                String[] synonyms = definitions[j].getSynonyms();
+                if (synonyms == null || synonyms.length == 0) continue;
+                StringBuilder s = new StringBuilder();
+                for (String synonym : synonyms) {
+                    s.append(", • ").append(synonym);
+                }
+                g.drawString(s.substring(2), realX + 65, realY + (height + LINE_SPACING) * lines++); //Synonym
+            }
+        }
+    }
+}
