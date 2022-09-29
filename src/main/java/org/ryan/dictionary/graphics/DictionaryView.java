@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.ryan.dictionary.graphics.SideView.collection;
+
 @Log
 public class DictionaryView extends JPanel {
 
@@ -42,18 +44,19 @@ public class DictionaryView extends JPanel {
     void display(WordAsset word) {
         this.asset = word;
         this.repaint();
+        Application.app.repaint();
 
-        System.out.println(word.getData().getWord());
+        System.out.println("display called -> " + asset.data.getWord());
 
         lucky.setEnabled(false);
-        int random = ThreadLocalRandom.current().nextInt(0, SideView.collection.size());
-        lucky.setName(SideView.collection.get(random));
+        int random = ThreadLocalRandom.current().nextInt(0, collection.size());
+        lucky.setName(collection.get(random));
         lucky.setEnabled(true);
     }
 
-    void search(String text) {
+    void search(String input) {
         field.setEnabled(false);
-        WordData data = DictionaryProcessor.fetchData(text);
+        WordData data = DictionaryProcessor.fetchData(input);
         Application.yOffset = 0;
         Application.xOffset = 0;
         if (data != null) {
@@ -73,6 +76,7 @@ public class DictionaryView extends JPanel {
         if (asset != null) {
             gui.forEach(Component::repaint);
             asset.paint(g);
+            System.out.println("painted -> " + asset.data.getWord());
         }
     }
 }

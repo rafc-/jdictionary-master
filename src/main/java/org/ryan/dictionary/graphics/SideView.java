@@ -27,14 +27,15 @@ public class SideView extends JPanel {
         displayLabels();
     }
 
-    static Label[] createLabels() {
+    Label[] createLabels() {
         Label[] labels = new Label[collection.size()];
         for(int i = 0; i < collection.size(); i++) {
+            String word = collection.get(i);
             labels[i] = new Label(collection.get(i));
             labels[i].addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println("click");
+                    new DictionaryView().search(word);
                 }
                 @Override
                 public void mousePressed(MouseEvent e) {

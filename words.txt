@@ -1,7 +1,7 @@
 congruent
 tentative
 sedentary
-pregmatic
+pragmatic
 beckon
 surly
 ardently
@@ -9,7 +9,7 @@ premonition
 salacious
 paradox
 incidently
-transmorgrified
+transmogrified
 endowed
 disingenuous
 de facto
@@ -80,7 +80,7 @@ vindictive
 chauvinist
 omnipotent
 catharsis
-cataclysmically
+cataclysmic
 inoculate
 proclivities
 frivolous

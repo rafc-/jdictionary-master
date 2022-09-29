@@ -56,18 +56,18 @@ public class WordAsset {
             g.drawString(String.format("%s", phonetic.getText()), realX, realY + (height + LINE_SPACING) * lines++); //Phonetic
         }
 
-        for (int i = 0; i < meanings.length; i++) {
-            g.drawString(String.format("", i + 1), realX, realY + (height + LINE_SPACING) * lines++);
+        for (WordData.Meaning meaning : meanings) {
+            g.drawString("", realX, realY + (height + LINE_SPACING) * lines++);
+
             g.setFont(new Font("Times New Roman", Font.ITALIC, 18));
-            g.drawString(String.format("%s", meanings[i].getPartOfSpeech()), realX, realY + (height + LINE_SPACING) * lines++); //Part of Speech
+            g.drawString(String.format("%s", meaning.getPartOfSpeech()), realX, realY + (height + LINE_SPACING) * lines++); //Part of Speech
             g.setFont(FONT);
 
-            WordData.Definition[] definitions = meanings[i].getDefinitions();
+            WordData.Definition[] definitions = meaning.getDefinitions();
             for (int j = 0; j < definitions.length; j++) {
                 g.drawString(String.format("%d. ", j + 1), realX + 25, realY + (height + LINE_SPACING) * lines++); //Numbers
 
                 List<String> wraps = wrap(definitions[j].getDefinition());
-                g.drawString(String.format("%s", wraps.remove(0)), realX + 65, realY + (height + LINE_SPACING) * lines++);
                 for (String line : wraps) {
                     g.drawString(line, realX + 65, realY + (height + LINE_SPACING) * lines++); //Definition
                 }
@@ -87,6 +87,7 @@ public class WordAsset {
                     s.append(", • ").append(synonym);
                 }
                 g.drawString(s.substring(2), realX + 65, realY + (height + LINE_SPACING) * lines++); //Synonym
+                g.drawString("", realX, realY + (height + LINE_SPACING) * lines++);
             }
         }
     }
