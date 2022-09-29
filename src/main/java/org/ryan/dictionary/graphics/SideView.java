@@ -15,11 +15,11 @@ import java.util.Scanner;
 @Log
 public class SideView extends JPanel {
 
-    static final Font font = new Font("Times New Roman", Font.PLAIN, 15);
+    final Font font = new Font("Times New Roman", Font.PLAIN, 15);
 
-    static final int LINE_SPACING = 10;
+    final int LINE_SPACING = 10;
 
-    static List<String> collection = new ArrayList<>();
+    static final List<String> COLLECTION = new ArrayList<>();
 
     public SideView() {
         setFont(font);
@@ -27,11 +27,39 @@ public class SideView extends JPanel {
         displayLabels();
     }
 
+    public static void read() throws FileNotFoundException {
+        File file = new File("words.txt");
+        Scanner scanner = new Scanner(file);
+
+        while (scanner.hasNext()) {
+            String words = scanner.next();
+            COLLECTION.add(words);
+        }
+
+        COLLECTION.sort(String::compareTo);
+        scanner.close();
+    }
+
+    private void displayLabels() {
+        int y = 50;
+        int realY = y - Application.yOffset;
+        int lines = 0;
+
+        Label[] labels = createLabels();
+        for (Label label : labels) {
+            this.add(label);
+
+            label.setBackground(Color.BLACK);
+            label.setForeground(Color.GREEN);
+            label.setBounds(50, realY + (18 + LINE_SPACING) * lines++, 150, 20);
+        }
+    }
+
     Label[] createLabels() {
-        Label[] labels = new Label[collection.size()];
-        for(int i = 0; i < collection.size(); i++) {
-            String word = collection.get(i);
-            labels[i] = new Label(collection.get(i));
+        Label[] labels = new Label[COLLECTION.size()];
+        for(int i = 0; i < COLLECTION.size(); i++) {
+            String word = COLLECTION.get(i);
+            labels[i] = new Label(COLLECTION.get(i));
             labels[i].addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -54,34 +82,6 @@ public class SideView extends JPanel {
         }
 
         return labels;
-    }
-
-    private void displayLabels() {
-        int y = 50;
-        int realY = y - Application.yOffset;
-        int lines = 0;
-
-        Label[] labels = createLabels();
-        for (Label label : labels) {
-            this.add(label);
-
-            label.setBackground(Color.BLACK);
-            label.setForeground(Color.GREEN);
-            label.setBounds(50, realY + (18 + LINE_SPACING) * lines++, 150, 20);
-        }
-    }
-
-    public static void read() throws FileNotFoundException {
-        File file = new File("words.txt");
-        Scanner scanner = new Scanner(file);
-
-        while (scanner.hasNext()) {
-            String words = scanner.next();
-            collection.add(words);
-        }
-
-        collection.sort(String::compareTo);
-        scanner.close();
     }
 
     @Override

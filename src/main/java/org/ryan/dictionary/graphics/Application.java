@@ -9,14 +9,14 @@ import java.io.FileNotFoundException;
 @Log
 public class Application extends JFrame {
 
-    private final String VERSION = "alpha0.1_1";
-    private final String NAME = "jdictionary " + VERSION;
     public static Application app;
     public static int yOffset = 0;
     public static int xOffset = 0;
 
     public Application() {
-        setTitle(NAME);
+        String version = "alpha0.1_3";
+        String title = "jdictionary " + version;
+        setTitle(title);
         setSize(1400, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

@@ -29,7 +29,7 @@ public final class DictionaryProcessor {
             return null;
         }
 
-        int responseCode = 200;
+        int responseCode;
         try {
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("GET");

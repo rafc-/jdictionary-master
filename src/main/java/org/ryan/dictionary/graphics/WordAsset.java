@@ -15,10 +15,13 @@ import java.util.List;
 public class WordAsset {
 
     final Font FONT = new Font("Times New Roman", Font.PLAIN, 18);
+
     final int LINE_SPACING = 10;
-    static int CHARS_PER_LINE = 130;
+
+    static final int CHARS_PER_LINE = 130;
 
     int x, y;
+
     WordData data;
 
     public static List<String> wrap(String text) {
@@ -32,6 +35,7 @@ public class WordAsset {
                 lines.add(word + " ");
             }
         }
+
         return lines;
     }
 
@@ -59,7 +63,7 @@ public class WordAsset {
         for (WordData.Meaning meaning : meanings) {
             g.drawString("", realX, realY + (height + LINE_SPACING) * lines++);
 
-            g.setFont(new Font("Times New Roman", Font.ITALIC, 18));
+            g.setFont(FONT.deriveFont(Font.ITALIC));
             g.drawString(String.format("%s", meaning.getPartOfSpeech()), realX, realY + (height + LINE_SPACING) * lines++); //Part of Speech
             g.setFont(FONT);
 
