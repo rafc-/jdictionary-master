@@ -1,0 +1,10 @@
+right side buttons; random, sort, 
+left side buttons; favourite
+
+definition on same line as its position
+new line between each whole definition
+
+voice pronouncation playback of word button
+
+seperate scrolling for each side
+scrolling for labels

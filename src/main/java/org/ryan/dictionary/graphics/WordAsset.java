@@ -44,8 +44,8 @@ public class WordAsset {
         int realX = x - Application.xOffset;
         int lines = 0;
 
-        g.setFont(FONT);
-        g.setColor(Color.GREEN);
+        g.setFont(FONT.deriveFont(Font.BOLD, 25));
+        g.setColor(Color.BLACK);
         FontMetrics metrics = g.getFontMetrics(FONT);
         int height = metrics.getHeight();
 
@@ -56,6 +56,7 @@ public class WordAsset {
         g.drawString(word, realX, realY); //Word
         lines++;
 
+        g.setFont(FONT);
         for (WordData.Phonetic phonetic : phonetics) {
             g.drawString(String.format("%s", phonetic.getText()), realX, realY + (height + LINE_SPACING) * lines++); //Phonetic
         }
@@ -63,7 +64,7 @@ public class WordAsset {
         for (WordData.Meaning meaning : meanings) {
             g.drawString("", realX, realY + (height + LINE_SPACING) * lines++);
 
-            g.setFont(FONT.deriveFont(Font.ITALIC));
+            g.setFont(FONT.deriveFont(Font.ITALIC, 21));
             g.drawString(String.format("%s", meaning.getPartOfSpeech()), realX, realY + (height + LINE_SPACING) * lines++); //Part of Speech
             g.setFont(FONT);
 

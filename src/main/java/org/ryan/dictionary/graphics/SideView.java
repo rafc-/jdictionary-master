@@ -27,20 +27,7 @@ public class SideView extends JPanel {
         displayLabels();
     }
 
-    public static void read() throws FileNotFoundException {
-        File file = new File("words.txt");
-        Scanner scanner = new Scanner(file);
-
-        while (scanner.hasNext()) {
-            String words = scanner.next();
-            COLLECTION.add(words);
-        }
-
-        COLLECTION.sort(String::compareTo);
-        scanner.close();
-    }
-
-    private void displayLabels() {
+    void displayLabels() {
         int y = 50;
         int realY = y - Application.yOffset;
         int lines = 0;
@@ -82,6 +69,19 @@ public class SideView extends JPanel {
         }
 
         return labels;
+    }
+
+    public static void read() throws FileNotFoundException {
+        File file = new File("words.txt");
+        Scanner scanner = new Scanner(file);
+
+        while (scanner.hasNext()) {
+            String words = scanner.next();
+            COLLECTION.add(words);
+        }
+
+        COLLECTION.sort(String::compareTo);
+        scanner.close();
     }
 
     @Override

@@ -50,7 +50,7 @@ public final class DictionaryProcessor {
     }
 
     private static WordData parseJSON(String input, int code) {
-        if(code == 200) {
+        if (code == 200) {
             JsonArray words = gson.fromJson(input, JsonArray.class);
             JsonElement first = words.get(0);
             return gson.fromJson(first, WordData.class);
