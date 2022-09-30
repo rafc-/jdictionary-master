@@ -14,12 +14,9 @@ import java.util.List;
 @Log
 public class WordAsset {
 
-    final Font FONT = new Font("Times New Roman", Font.PLAIN, 18);
-
-    final int LINE_SPACING = 10;
-
     static final int CHARS_PER_LINE = 130;
-
+    final Font FONT = new Font("Times New Roman", Font.PLAIN, 18);
+    final int LINE_SPACING = 10;
     int x, y;
 
     WordData data;
@@ -44,7 +41,7 @@ public class WordAsset {
         int realX = x - Application.xOffset;
         int lines = 0;
 
-        g.setFont(FONT.deriveFont(Font.BOLD, 25));
+        g.setFont(FONT.deriveFont(Font.BOLD, 28));
         g.setColor(Color.BLACK);
         FontMetrics metrics = g.getFontMetrics(FONT);
         int height = metrics.getHeight();
@@ -53,24 +50,25 @@ public class WordAsset {
         WordData.Phonetic[] phonetics = data.getPhonetics();
         WordData.Meaning[] meanings = data.getMeanings();
 
+        g.setFont(FONT);
         g.drawString(word, realX, realY); //Word
         lines++;
 
-        g.setFont(FONT);
         for (WordData.Phonetic phonetic : phonetics) {
+            if (phonetic.getText() == null) break;
             g.drawString(String.format("%s", phonetic.getText()), realX, realY + (height + LINE_SPACING) * lines++); //Phonetic
         }
 
         for (WordData.Meaning meaning : meanings) {
-            g.drawString("", realX, realY + (height + LINE_SPACING) * lines++);
-
-            g.setFont(FONT.deriveFont(Font.ITALIC, 21));
+            lines++;
+            g.setFont(FONT.deriveFont(Font.ITALIC | Font.BOLD, 17));
             g.drawString(String.format("%s", meaning.getPartOfSpeech()), realX, realY + (height + LINE_SPACING) * lines++); //Part of Speech
             g.setFont(FONT);
 
             WordData.Definition[] definitions = meaning.getDefinitions();
             for (int j = 0; j < definitions.length; j++) {
-                g.drawString(String.format("%d. ", j + 1), realX + 25, realY + (height + LINE_SPACING) * lines++); //Numbers
+                if (j >= 1) lines++;
+                g.drawString(String.format("%d. ", j + 1), realX + 25, realY + (height + LINE_SPACING) * lines); //No. of definition
 
                 List<String> wraps = wrap(definitions[j].getDefinition());
                 for (String line : wraps) {
@@ -92,7 +90,6 @@ public class WordAsset {
                     s.append(", • ").append(synonym);
                 }
                 g.drawString(s.substring(2), realX + 65, realY + (height + LINE_SPACING) * lines++); //Synonym
-                g.drawString("", realX, realY + (height + LINE_SPACING) * lines++);
             }
         }
     }
