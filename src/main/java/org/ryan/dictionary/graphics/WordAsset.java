@@ -50,8 +50,8 @@ public class WordAsset {
         WordData.Phonetic[] phonetics = data.getPhonetics();
         WordData.Meaning[] meanings = data.getMeanings();
 
-        g.setFont(FONT);
         g.drawString(word, realX, realY); //Word
+        g.setFont(FONT);
         lines++;
 
         for (WordData.Phonetic phonetic : phonetics) {

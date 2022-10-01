@@ -70,6 +70,8 @@ public class DictionaryView extends JPanel {
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
+        //g.fillRect(0, 0, Application.app.getWidth(), Application.app.getHeight());
+
         Image img;
         try {
             img = ImageIO.read(new File("bg.png"));
@@ -77,7 +79,7 @@ public class DictionaryView extends JPanel {
             throw new RuntimeException(e);
         }
         g.drawImage(img, 0, 0, null);
-        //g.fillRect(0, 0, Application.app.getWidth(), Application.app.getHeight());
+
 
         if (asset != null) {
             GUI.forEach(Component::repaint);

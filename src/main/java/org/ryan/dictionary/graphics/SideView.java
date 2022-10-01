@@ -23,7 +23,7 @@ public class SideView extends JPanel {
 
     public SideView() {
         setFont(font);
-        setLayout(null);
+        setLayout(new GridLayout(COLLECTION.size(), 1));
         displayLabels();
     }
 
@@ -37,7 +37,7 @@ public class SideView extends JPanel {
             this.add(label);
 
             label.setBackground(Color.BLACK);
-            label.setForeground(Color.GREEN);
+            label.setForeground(Color.WHITE);
             label.setBounds(50, realY + (18 + LINE_SPACING) * lines++, 150, 20);
         }
     }
@@ -86,7 +86,7 @@ public class SideView extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, Application.app.getWidth(), Application.app.getHeight());
+        //g.setColor(Color.BLACK);
+        //g.fillRect(0, 0, Application.app.getWidth(), Application.app.getHeight());
     }
 }

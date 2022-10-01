@@ -14,7 +14,7 @@ public class Application extends JFrame {
     public static int xOffset = 0;
 
     public Application() {
-        String version = "alpha0.2_1";
+        String version = "alpha0.3";
         String title = "jdictionary " + version;
         setTitle(title);
         setSize(1400, 800);
@@ -23,10 +23,10 @@ public class Application extends JFrame {
         splitter.setDividerLocation(1125);
         splitter.setEnabled(false);
         splitter.setLeftComponent(new DictionaryView());
-        splitter.setRightComponent(new SideView());
+        splitter.setRightComponent(new JScrollPane(new SideView(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
         add(splitter);
         addMouseWheelListener(new MouseHandler());
-        setResizable(true);
+        setResizable(false);
         setVisible(true);
     }
 
