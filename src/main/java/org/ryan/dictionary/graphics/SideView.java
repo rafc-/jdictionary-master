@@ -4,8 +4,10 @@ import lombok.extern.java.Log;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -23,8 +25,47 @@ public class SideView extends JPanel {
 
     public SideView() {
         setFont(font);
+
+        ImageIcon random = new ImageIcon("res/icon/random.png");
+        JButton randomButton = new JButton(new ImageIcon(getScaledImage(random.getImage(), 24, 24)));
+        displayButton(randomButton, "Search random word", e -> new DictionaryView().search(COLLECTION.get(DictionaryView.random)));
+
+        ImageIcon alphabet = new ImageIcon("res/icon/sort.png");
+        JButton alphabetButton = new JButton(new ImageIcon(getScaledImage(alphabet.getImage(), 24, 24)));
+        displayButton(alphabetButton, "Sort alphabetically", e -> COLLECTION.sort(String::compareTo));
+
+        ImageIcon date = new ImageIcon("res/icon/date.png");
+        JButton dateButton = new JButton(new ImageIcon(getScaledImage(date.getImage(), 24, 24)));
+        displayButton(dateButton, "Sort by date added", e -> System.out.println("sort by date"));
+
         setLayout(new GridLayout(COLLECTION.size(), 1));
         displayLabels();
+    }
+
+    void displayButton(JButton button, String tooltip, ActionListener action) {
+        this.add(button);
+        button.setOpaque(false);
+        button.setBorderPainted(true);
+        button.setContentAreaFilled(false);
+        button.setToolTipText(tooltip);
+        button.addActionListener(action);
+    }
+
+    /**
+     * Resizes an image using a Graphics2D object backed by a BufferedImage.
+     * @param srcImg - source image to scale
+     * @param w - desired width
+     * @param h - desired height
+     * @return - the new resized image
+     */
+    public static Image getScaledImage(Image srcImg, int w, int h){
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+
+        return resizedImg;
     }
 
     void displayLabels() {
@@ -45,8 +86,8 @@ public class SideView extends JPanel {
     Label[] createLabels() {
         Label[] labels = new Label[COLLECTION.size()];
         for(int i = 0; i < COLLECTION.size(); i++) {
-            String word = COLLECTION.get(i);
             labels[i] = new Label(COLLECTION.get(i));
+            String word = COLLECTION.get(i);
             labels[i].addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -71,7 +112,7 @@ public class SideView extends JPanel {
         return labels;
     }
 
-    public static void read() throws FileNotFoundException {
+    static void read() throws FileNotFoundException {
         File file = new File("words.txt");
         Scanner scanner = new Scanner(file);
 
@@ -82,11 +123,5 @@ public class SideView extends JPanel {
 
         COLLECTION.sort(String::compareTo);
         scanner.close();
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        //g.setColor(Color.BLACK);
-        //g.fillRect(0, 0, Application.app.getWidth(), Application.app.getHeight());
     }
 }

@@ -19,7 +19,7 @@ public class DictionaryView extends JPanel {
     final List<Component> GUI = new ArrayList<>();
     final TextField FIELD;
     final Button LUCKY;
-    int random;
+    static int random;
 
     static WordAsset asset;
 
@@ -74,7 +74,7 @@ public class DictionaryView extends JPanel {
 
         Image img;
         try {
-            img = ImageIO.read(new File("bg.png"));
+            img = ImageIO.read(new File("res/bg.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

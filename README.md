@@ -1,2 +1,2 @@
 # JDictionary
-A simple Java App, based on Swing, with a little help of GSON, which queries a dictionary API for word data.
+A simple dictionary built with Java, based on Swing, using GSON to query Google's dictionary API.
