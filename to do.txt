@@ -1,4 +1,0 @@
-right side buttons; random, sort, 
-left side buttons; favourite
-
-voice pronouncation playback of word button

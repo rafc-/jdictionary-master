@@ -14,8 +14,8 @@ import java.util.List;
 @Log
 public class WordAsset {
 
-    static final int CHARS_PER_LINE = 130;
     final Font FONT = new Font("Times New Roman", Font.PLAIN, 18);
+    static final int CHARS_PER_LINE = 130;
     final int LINE_SPACING = 10;
     int x, y;
 

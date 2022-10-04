@@ -1,5 +1,6 @@
 package org.ryan.dictionary.graphics;
 
+import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.ryan.dictionary.api.DictionaryProcessor;
 import org.ryan.dictionary.api.WordData;
@@ -8,52 +9,53 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Log
 public class DictionaryView extends JPanel {
 
     final List<Component> GUI = new ArrayList<>();
-    final TextField FIELD;
-    final Button LUCKY;
-    static int random;
-
+    final TextField SEARCH_FIELD;
     static WordAsset asset;
 
     public DictionaryView() {
-        FIELD = new TextField("intrinsic");
-        FIELD.setPreferredSize(new Dimension(200, 25));
-        FIELD.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        FIELD.addActionListener(e -> search(FIELD.getText()));
-        GUI.add(FIELD);
+        SEARCH_FIELD = new TextField("");
+        SEARCH_FIELD.setPreferredSize(new Dimension(200, 25));
+        SEARCH_FIELD.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        SEARCH_FIELD.addActionListener(e -> search(SEARCH_FIELD.getText()));
+        GUI.add(SEARCH_FIELD);
 
-        Button button = new Button("Go");
-        button.addActionListener(e -> search(FIELD.getText()));
-        GUI.add(button);
+        Button goButton = new Button("Go");
+        goButton.addActionListener(e -> search(SEARCH_FIELD.getText()));
+        GUI.add(goButton);
 
-        LUCKY = new Button("I'm feeling lucky");
-        random = ThreadLocalRandom.current().nextInt(0, SideView.COLLECTION.size());
-        LUCKY.setName(SideView.COLLECTION.get(random));
-        LUCKY.addActionListener(e -> search(LUCKY.getName()));
-        GUI.add(LUCKY);
+        ImageIcon heart = new ImageIcon("res/icon/heart.png");
+        JButton favouriteButton = new JButton(new ImageIcon(SideView.getScaledImage(heart.getImage(), 15, 15)));
+        favouriteButton.setBorderPainted(false);
+        favouriteButton.addActionListener(e -> addToList(asset.getData().getWord()));
+        GUI.add(favouriteButton);
 
-        add(FIELD);
-        add(button);
-        add(LUCKY);
+        add(SEARCH_FIELD);
+        add(goButton);
+        add(favouriteButton);
+    }
+
+    void addToList(String word) {
+        SideView.COLLECTION.add(word);
+        System.out.println("added " + word + " to collection");
     }
 
     void search(String input) {
-        FIELD.setEnabled(false);
+        SEARCH_FIELD.setEnabled(false);
         WordData data = DictionaryProcessor.fetchData(input);
         Application.yOffset = 0;
         Application.xOffset = 0;
         if (data != null) {
             WordAsset asset = new WordAsset(60, 100, data);
             display(asset);
-            FIELD.setEnabled(true);
+            SEARCH_FIELD.setEnabled(true);
+            SEARCH_FIELD.setText(null);
         } else {
             log.severe("Error: problem during search.");
         }
@@ -62,24 +64,12 @@ public class DictionaryView extends JPanel {
     void display(WordAsset word) {
         asset = word;
         Application.app.repaint();
-
-        random = ThreadLocalRandom.current().nextInt(0, SideView.COLLECTION.size());
-        LUCKY.setName(SideView.COLLECTION.get(random));
     }
 
+    @SneakyThrows
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        //g.fillRect(0, 0, Application.app.getWidth(), Application.app.getHeight());
-
-        Image img;
-        try {
-            img = ImageIO.read(new File("res/bg.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        g.drawImage(img, 0, 0, null);
-
+        g.drawImage(ImageIO.read(new File("res/bg.png")), 0, 0, null);
 
         if (asset != null) {
             GUI.forEach(Component::repaint);

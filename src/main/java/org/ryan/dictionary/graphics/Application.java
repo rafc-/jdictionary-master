@@ -14,7 +14,7 @@ public class Application extends JFrame {
     public static int xOffset = 0;
 
     public Application() {
-        String version = "alpha0.3_1";
+        String version = "alpha0.3_2";
         String title = "jdictionary " + version;
         setTitle(title);
         setSize(1400, 800);

@@ -13,42 +13,34 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Log
 public class SideView extends JPanel {
 
-    final Font font = new Font("Times New Roman", Font.PLAIN, 15);
-
-    final int LINE_SPACING = 10;
-
     static final List<String> COLLECTION = new ArrayList<>();
 
     public SideView() {
-        setFont(font);
+        setBackground(Color.WHITE);
 
-        ImageIcon random = new ImageIcon("res/icon/random.png");
-        JButton randomButton = new JButton(new ImageIcon(getScaledImage(random.getImage(), 24, 24)));
-        displayButton(randomButton, "Search random word", e -> new DictionaryView().search(COLLECTION.get(DictionaryView.random)));
+        displayButton(new JButton(
+                new ImageIcon(getScaledImage(new ImageIcon("res/icon/random.png").getImage(), 24, 24))),
+                "Search a random word",
+                e -> new DictionaryView().search(COLLECTION.get(
+                        ThreadLocalRandom.current().nextInt(0, SideView.COLLECTION.size()))));
 
-        ImageIcon alphabet = new ImageIcon("res/icon/sort.png");
-        JButton alphabetButton = new JButton(new ImageIcon(getScaledImage(alphabet.getImage(), 24, 24)));
-        displayButton(alphabetButton, "Sort alphabetically", e -> COLLECTION.sort(String::compareTo));
+        displayButton(new JButton(
+                new ImageIcon(getScaledImage(new ImageIcon("res/icon/sort.png").getImage(), 24, 24))),
+                "Sort alphabetically",
+                e -> COLLECTION.sort(String::compareTo));
 
-        ImageIcon date = new ImageIcon("res/icon/date.png");
-        JButton dateButton = new JButton(new ImageIcon(getScaledImage(date.getImage(), 24, 24)));
-        displayButton(dateButton, "Sort by date added", e -> System.out.println("sort by date"));
+        displayButton(new JButton(
+                new ImageIcon(getScaledImage(new ImageIcon("res/icon/date.png").getImage(), 24, 24))),
+                "Sort by date added",
+                e -> System.out.println("sort by date"));
 
         setLayout(new GridLayout(COLLECTION.size(), 1));
         displayLabels();
-    }
-
-    void displayButton(JButton button, String tooltip, ActionListener action) {
-        this.add(button);
-        button.setOpaque(false);
-        button.setBorderPainted(true);
-        button.setContentAreaFilled(false);
-        button.setToolTipText(tooltip);
-        button.addActionListener(action);
     }
 
     /**
@@ -58,7 +50,7 @@ public class SideView extends JPanel {
      * @param h - desired height
      * @return - the new resized image
      */
-    public static Image getScaledImage(Image srcImg, int w, int h){
+    static Image getScaledImage(Image srcImg, int w, int h){
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -68,25 +60,30 @@ public class SideView extends JPanel {
         return resizedImg;
     }
 
-    void displayLabels() {
-        int y = 50;
-        int realY = y - Application.yOffset;
-        int lines = 0;
+    void displayButton(JButton button, String tooltip, ActionListener action) {
+        this.add(button);
+        button.setLayout(null);
+        button.setBorderPainted(true);
+        button.setContentAreaFilled(false);
+        button.setToolTipText(tooltip);
+        button.addActionListener(action);
+    }
 
-        Label[] labels = createLabels();
-        for (Label label : labels) {
+    void displayLabels() {
+        JLabel[] labels = createLabels();
+        for (JLabel label : labels) {
             this.add(label);
 
-            label.setBackground(Color.BLACK);
-            label.setForeground(Color.WHITE);
-            label.setBounds(50, realY + (18 + LINE_SPACING) * lines++, 150, 20);
+            label.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+            label.setBackground(Color.WHITE);
+            label.setForeground(Color.BLACK);
         }
     }
 
-    Label[] createLabels() {
-        Label[] labels = new Label[COLLECTION.size()];
+    JLabel[] createLabels() {
+        JLabel[] labels = new JLabel[COLLECTION.size()];
         for(int i = 0; i < COLLECTION.size(); i++) {
-            labels[i] = new Label(COLLECTION.get(i));
+            labels[i] = new JLabel(COLLECTION.get(i));
             String word = COLLECTION.get(i);
             labels[i].addMouseListener(new MouseListener() {
                 @Override
