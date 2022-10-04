@@ -14,17 +14,25 @@ public class Application extends JFrame {
     public static int xOffset = 0;
 
     public Application() {
-        String version = "alpha0.3_2";
+        String version = "alpha0.3_3";
         String title = "jdictionary " + version;
         setTitle(title);
         setSize(1400, 800);
         setLocationRelativeTo(null);
-        JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitter.setDividerLocation(1125);
-        splitter.setEnabled(false);
-        splitter.setLeftComponent(new DictionaryView());
-        splitter.setRightComponent(new JScrollPane(new SideView(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-        add(splitter);
+        JSplitPane viewSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        JSplitPane sideviewSplitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        viewSplitter.setEnabled(false);
+        viewSplitter.setDividerLocation(1125);
+        viewSplitter.setDividerSize(0);
+        viewSplitter.setLeftComponent(new DictionaryView());
+        viewSplitter.setRightComponent(sideviewSplitter);
+        sideviewSplitter.setEnabled(false);
+        sideviewSplitter.setDividerLocation(50);
+        sideviewSplitter.setDividerSize(0);
+        sideviewSplitter.setTopComponent(new SideView.SideButtonView());
+        sideviewSplitter.setBottomComponent(new JScrollPane(new SideView(),
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+        add(viewSplitter);
         addMouseWheelListener(new MouseHandler());
         setResizable(false);
         setVisible(true);

@@ -31,7 +31,8 @@ public class DictionaryView extends JPanel {
         GUI.add(goButton);
 
         ImageIcon heart = new ImageIcon("res/icon/heart.png");
-        JButton favouriteButton = new JButton(new ImageIcon(SideView.getScaledImage(heart.getImage(), 15, 15)));
+        JButton favouriteButton = new JButton(
+                new ImageIcon(SideView.SideButtonView.getScaledImage(heart.getImage(), 15, 15)));
         favouriteButton.setBorderPainted(false);
         favouriteButton.addActionListener(e -> addToList(asset.getData().getWord()));
         GUI.add(favouriteButton);

@@ -14,14 +14,12 @@ import java.util.List;
 @Log
 public class WordAsset {
 
-    final Font FONT = new Font("Times New Roman", Font.PLAIN, 18);
-    static final int CHARS_PER_LINE = 130;
-    final int LINE_SPACING = 10;
     int x, y;
 
     WordData data;
 
     public static List<String> wrap(String text) {
+        final int CHARS_PER_LINE = 130;
         List<String> lines = new ArrayList<>(List.of(""));
         for (String word : text.split(" ")) {
             int last = lines.size() - 1;
@@ -37,13 +35,15 @@ public class WordAsset {
     }
 
     public void paint(Graphics g) {
+        final int LINE_SPACING = 10;
         int realY = y - Application.yOffset;
         int realX = x - Application.xOffset;
         int lines = 0;
 
-        g.setFont(FONT.deriveFont(Font.BOLD, 28));
+        Font font = new Font("Times New Roman", Font.PLAIN, 18);
+        g.setFont(font.deriveFont(Font.BOLD, 28));
         g.setColor(Color.BLACK);
-        FontMetrics metrics = g.getFontMetrics(FONT);
+        FontMetrics metrics = g.getFontMetrics(font);
         int height = metrics.getHeight();
 
         String word = data.getWord();
@@ -51,7 +51,7 @@ public class WordAsset {
         WordData.Meaning[] meanings = data.getMeanings();
 
         g.drawString(word, realX, realY); //Word
-        g.setFont(FONT);
+        g.setFont(font);
         lines++;
 
         for (WordData.Phonetic phonetic : phonetics) {
@@ -61,9 +61,9 @@ public class WordAsset {
 
         for (WordData.Meaning meaning : meanings) {
             lines++;
-            g.setFont(FONT.deriveFont(Font.ITALIC | Font.BOLD, 17));
+            g.setFont(font.deriveFont(Font.ITALIC | Font.BOLD, 17));
             g.drawString(String.format("%s", meaning.getPartOfSpeech()), realX, realY + (height + LINE_SPACING) * lines++); //Part of Speech
-            g.setFont(FONT);
+            g.setFont(font);
 
             WordData.Definition[] definitions = meaning.getDefinitions();
             for (int j = 0; j < definitions.length; j++) {
