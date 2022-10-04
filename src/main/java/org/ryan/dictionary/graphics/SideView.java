@@ -21,19 +21,19 @@ public class SideView extends JPanel {
     static class SideButtonView extends JPanel {
 
         public SideButtonView() {
-            displayButton(new JButton(
-                            new ImageIcon(getScaledImage(new ImageIcon("res/icon/random.png").getImage(), 24, 24))),
+            displayButton(new JButton(new ImageIcon(getScaledImage(
+                    new ImageIcon("res/icon/random.png").getImage(), 24, 24))),
                     "Search random word",
                     e -> new DictionaryView().search(COLLECTION.get(
                             ThreadLocalRandom.current().nextInt(0, SideView.COLLECTION.size()))));
 
-            displayButton(new JButton(
-                            new ImageIcon(getScaledImage(new ImageIcon("res/icon/sort.png").getImage(), 24, 24))),
+            displayButton(new JButton(new ImageIcon(getScaledImage(
+                    new ImageIcon("res/icon/sort.png").getImage(), 24, 24))),
                     "Sort alphabetically",
                     e -> COLLECTION.sort(String::compareTo));
 
-            displayButton(new JButton(
-                            new ImageIcon(getScaledImage(new ImageIcon("res/icon/date.png").getImage(), 24, 24))),
+            displayButton(new JButton(new ImageIcon(getScaledImage(
+                    new ImageIcon("res/icon/date.png").getImage(), 24, 24))),
                     "Sort by date added",
                     e -> System.out.println("sort by date"));
         }

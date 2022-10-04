@@ -30,10 +30,8 @@ public class DictionaryView extends JPanel {
         goButton.addActionListener(e -> search(SEARCH_FIELD.getText()));
         GUI.add(goButton);
 
-        ImageIcon heart = new ImageIcon("res/icon/heart.png");
-        JButton favouriteButton = new JButton(
-                new ImageIcon(SideView.SideButtonView.getScaledImage(heart.getImage(), 15, 15)));
-        favouriteButton.setBorderPainted(false);
+        JButton favouriteButton = new JButton(new ImageIcon(SideView.SideButtonView.getScaledImage(
+                new ImageIcon("res/icon/heart.png").getImage(), 15, 15)));
         favouriteButton.addActionListener(e -> addToList(asset.getData().getWord()));
         GUI.add(favouriteButton);
 
@@ -42,7 +40,7 @@ public class DictionaryView extends JPanel {
         add(favouriteButton);
     }
 
-    void addToList(String word) {
+    static void addToList(String word) {
         SideView.COLLECTION.add(word);
         System.out.println("added " + word + " to collection");
     }
