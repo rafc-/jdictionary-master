@@ -13,10 +13,10 @@ import java.util.Scanner;
 
 @Log
 public final class DictionaryProcessor {
-    private DictionaryProcessor()  {  }
 
     static final String API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
-    static final Gson gson = new Gson();
+
+    static final Gson GSON = new Gson();
 
     public static WordData fetchData(String word) {
         URL url;
@@ -51,9 +51,10 @@ public final class DictionaryProcessor {
 
     private static WordData parseJSON(String input, int code) {
         if (code == 200) {
-            JsonArray words = gson.fromJson(input, JsonArray.class);
-            JsonElement first = words.get(0);
-            return gson.fromJson(first, WordData.class);
+            JsonArray array = GSON.fromJson(input, JsonArray.class);
+            JsonElement data = array.get(0);
+            System.out.println(data);
+            return GSON.fromJson(data, WordData.class);
         }
 
         return null;

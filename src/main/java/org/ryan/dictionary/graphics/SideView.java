@@ -17,25 +17,34 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Log
 public class SideView extends JPanel {
-
     static class SideButtonView extends JPanel {
 
         public SideButtonView() {
-            displayButton(new JButton(new ImageIcon(getScaledImage(
-                    new ImageIcon("res/icon/random.png").getImage(), 24, 24))),
-                    "Search random word",
-                    e -> new DictionaryView().search(COLLECTION.get(
-                            ThreadLocalRandom.current().nextInt(0, SideView.COLLECTION.size()))));
+            JButton heart = new JButton(new ImageIcon(getScaledImage(
+                    new ImageIcon("res/icon/heart.png").getImage(), 24, 24)));
+            displayButton(heart, "Add word to list", e -> addToList(DictionaryView.asset.getData().getWord()));
+            DictionaryView.GUI.add(heart);
 
-            displayButton(new JButton(new ImageIcon(getScaledImage(
-                    new ImageIcon("res/icon/sort.png").getImage(), 24, 24))),
-                    "Sort alphabetically",
-                    e -> COLLECTION.sort(String::compareTo));
+            JButton random = new JButton(new ImageIcon(getScaledImage(
+                    new ImageIcon("res/icon/random.png").getImage(), 24, 24)));
+            displayButton(random, "Search random word", e -> new DictionaryView().search(COLLECTION.get(
+                    ThreadLocalRandom.current().nextInt(0, SideView.COLLECTION.size()))));
+            DictionaryView.GUI.add(random);
 
-            displayButton(new JButton(new ImageIcon(getScaledImage(
-                    new ImageIcon("res/icon/date.png").getImage(), 24, 24))),
-                    "Sort by date added",
-                    e -> System.out.println("sort by date"));
+            JButton sort = new JButton(new ImageIcon(getScaledImage(
+                    new ImageIcon("res/icon/sort.png").getImage(), 24, 24)));
+            displayButton(sort, "Sort alphabetically", e -> COLLECTION.sort(String::compareTo));
+            DictionaryView.GUI.add(sort);
+
+            JButton date = new JButton(new ImageIcon(getScaledImage(
+                    new ImageIcon("res/icon/date.png").getImage(), 24, 24)));
+            displayButton(date, "Sort by date", e -> System.out.println("sort by date"));
+            DictionaryView.GUI.add(date);
+
+            add(heart);
+            add(random);
+            add(sort);
+            add(date);
         }
 
         /**
@@ -45,7 +54,7 @@ public class SideView extends JPanel {
          * @param h - desired height
          * @return - the new resized image
          */
-        static Image getScaledImage(Image srcImg, int w, int h){
+        Image getScaledImage(Image srcImg, int w, int h){
             BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
             Graphics2D g2 = resizedImg.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -57,12 +66,16 @@ public class SideView extends JPanel {
 
         void displayButton(JButton button, String tooltip, ActionListener action) {
             this.add(button);
-            button.setLayout(null);
+            button.setBorder(null);
             button.setOpaque(false);
             button.setBorderPainted(false);
             button.setContentAreaFilled(false);
             button.setToolTipText(tooltip);
             button.addActionListener(action);
+        }
+        void addToList(String word) {
+            SideView.COLLECTION.add(word);
+            System.out.println("added " + word + " to collection");
         }
     }
 
@@ -78,35 +91,33 @@ public class SideView extends JPanel {
         for (JLabel label : labels) {
             this.add(label);
             label.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-            label.setBackground(Color.WHITE);
             label.setForeground(Color.BLACK);
+            label.setOpaque(false);
         }
     }
 
     JLabel[] createLabels() {
         JLabel[] labels = new JLabel[COLLECTION.size()];
         for(int i = 0; i < COLLECTION.size(); i++) {
-            labels[i] = new JLabel(COLLECTION.get(i));
             String word = COLLECTION.get(i);
+            labels[i] = new JLabel(COLLECTION.get(i));
             labels[i].addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     new DictionaryView().search(word);
                 }
                 @Override
-                public void mousePressed(MouseEvent e) {
-                }
+                public void mousePressed(MouseEvent e) {}
                 @Override
-                public void mouseReleased(MouseEvent e) {
-                }
+                public void mouseReleased(MouseEvent e) {}
                 @Override
-                public void mouseEntered(MouseEvent e) {
-                }
+                public void mouseEntered(MouseEvent e) {}
                 @Override
-                public void mouseExited(MouseEvent e) {
-                }
+                public void mouseExited(MouseEvent e) {}
             }); {
             }
+
+            DictionaryView.GUI.add(labels[i]);
         }
 
         return labels;
