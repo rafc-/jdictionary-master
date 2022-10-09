@@ -17,34 +17,37 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Log
 public class SideView extends JPanel {
+
+    static final List<String> COLLECTION = new ArrayList<>();
+
     static class SideButtonView extends JPanel {
 
         public SideButtonView() {
-            JButton heart = new JButton(new ImageIcon(getScaledImage(
+            final JButton HEART_BUTTON = new JButton(new ImageIcon(getScaledImage(
                     new ImageIcon("res/icon/heart.png").getImage(), 24, 24)));
-            displayButton(heart, "Add word to list", e -> addToList(DictionaryView.asset.getData().getWord()));
-            DictionaryView.GUI.add(heart);
+            displayButton(HEART_BUTTON, "Add word to list", e -> addToList(DictionaryView.asset.getData().getWord()));
+            Application.GUI.add(HEART_BUTTON);
 
-            JButton random = new JButton(new ImageIcon(getScaledImage(
+            final JButton RANDOM_BUTTON = new JButton(new ImageIcon(getScaledImage(
                     new ImageIcon("res/icon/random.png").getImage(), 24, 24)));
-            displayButton(random, "Search random word", e -> new DictionaryView().search(COLLECTION.get(
+            displayButton(RANDOM_BUTTON, "Search random word", e -> new DictionaryView().search(COLLECTION.get(
                     ThreadLocalRandom.current().nextInt(0, SideView.COLLECTION.size()))));
-            DictionaryView.GUI.add(random);
+            Application.GUI.add(RANDOM_BUTTON);
 
-            JButton sort = new JButton(new ImageIcon(getScaledImage(
+            final JButton SORT_BUTTON = new JButton(new ImageIcon(getScaledImage(
                     new ImageIcon("res/icon/sort.png").getImage(), 24, 24)));
-            displayButton(sort, "Sort alphabetically", e -> COLLECTION.sort(String::compareTo));
-            DictionaryView.GUI.add(sort);
+            displayButton(SORT_BUTTON, "Sort alphabetically", e -> COLLECTION.sort(String::compareTo));
+            Application.GUI.add(SORT_BUTTON);
 
-            JButton date = new JButton(new ImageIcon(getScaledImage(
+            final JButton DATE_BUTTON = new JButton(new ImageIcon(getScaledImage(
                     new ImageIcon("res/icon/date.png").getImage(), 24, 24)));
-            displayButton(date, "Sort by date", e -> System.out.println("sort by date"));
-            DictionaryView.GUI.add(date);
+            displayButton(DATE_BUTTON, "Sort by date", e -> System.out.println("sort by date"));
+            Application.GUI.add(DATE_BUTTON);
 
-            add(heart);
-            add(random);
-            add(sort);
-            add(date);
+            add(HEART_BUTTON);
+            add(RANDOM_BUTTON);
+            add(SORT_BUTTON);
+            add(DATE_BUTTON);
         }
 
         /**
@@ -63,11 +66,10 @@ public class SideView extends JPanel {
 
             return resizedImg;
         }
-
         void displayButton(JButton button, String tooltip, ActionListener action) {
             this.add(button);
-            button.setBorder(null);
             button.setOpaque(false);
+            button.setBorder(null);
             button.setBorderPainted(false);
             button.setContentAreaFilled(false);
             button.setToolTipText(tooltip);
@@ -79,8 +81,6 @@ public class SideView extends JPanel {
         }
     }
 
-    static final List<String> COLLECTION = new ArrayList<>();
-
     public SideView() {
         setLayout(new GridLayout(COLLECTION.size(), 1));
         displayLabels();
@@ -90,9 +90,8 @@ public class SideView extends JPanel {
         JLabel[] labels = createLabels();
         for (JLabel label : labels) {
             this.add(label);
-            label.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+            label.setFont(new Font("Times New Roman", Font.PLAIN, 14));
             label.setForeground(Color.BLACK);
-            label.setOpaque(false);
         }
     }
 
@@ -116,15 +115,13 @@ public class SideView extends JPanel {
                 public void mouseExited(MouseEvent e) {}
             }); {
             }
-
-            DictionaryView.GUI.add(labels[i]);
         }
 
         return labels;
     }
 
     static void read() throws FileNotFoundException {
-        File file = new File("words.txt");
+        File file = new File("data/words.txt");
         Scanner scanner = new Scanner(file);
 
         while (scanner.hasNext()) {

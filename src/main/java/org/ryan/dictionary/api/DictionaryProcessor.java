@@ -14,16 +14,13 @@ import java.util.Scanner;
 @Log
 public final class DictionaryProcessor {
 
-    static final String API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
-
-    static final Gson GSON = new Gson();
-
     public static WordData fetchData(String word) {
-        URL url;
-        StringBuilder textData = new StringBuilder();
+        final URL URL;
+        final String API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+        final StringBuilder DATA_SET = new StringBuilder();
 
         try {
-            url = new URL(API_URL + word);
+            URL = new URL(API_URL + word);
         } catch (MalformedURLException e) {
             log.severe(String.format("Invalid URL: %s", API_URL + word));
             return null;
@@ -31,14 +28,14 @@ public final class DictionaryProcessor {
 
         int responseCode;
         try {
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            HttpsURLConnection connection = (HttpsURLConnection) URL.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
             responseCode =  connection.getResponseCode();
 
-            Scanner scanner = new Scanner(url.openStream());
+            Scanner scanner = new Scanner(URL.openStream());
             while(scanner.hasNext()) {
-                textData.append(scanner.nextLine());
+                DATA_SET.append(scanner.nextLine());
             }
             scanner.close();
         } catch (IOException e) {
@@ -46,14 +43,15 @@ public final class DictionaryProcessor {
             return null;
         }
 
-        return parseJSON(textData.toString(), responseCode);
+        return parseJSON(DATA_SET.toString(), responseCode);
     }
 
     private static WordData parseJSON(String input, int code) {
+        final Gson GSON = new Gson();
+
         if (code == 200) {
             JsonArray array = GSON.fromJson(input, JsonArray.class);
             JsonElement data = array.get(0);
-            System.out.println(data);
             return GSON.fromJson(data, WordData.class);
         }
 

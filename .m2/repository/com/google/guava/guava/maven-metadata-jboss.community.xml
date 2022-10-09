@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.google.guava</groupId>
+  <artifactId>guava</artifactId>
+  <versioning>
+    <latest>20.0-hal</latest>
+    <release>20.0-hal</release>
+    <versions>
+      <version>19.0.0.jbossorg-1</version>
+      <version>19.0.0.jbossorg-2</version>
+      <version>19.0.20150826</version>
+      <version>20.0-hal</version>
+    </versions>
+    <lastUpdated>20160429131712</lastUpdated>
+  </versioning>
+</metadata>

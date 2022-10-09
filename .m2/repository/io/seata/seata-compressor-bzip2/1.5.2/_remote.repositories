@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Mon Sep 26 22:53:56 BST 2022
+seata-compressor-bzip2-1.5.2-sources.jar>central=
+seata-compressor-bzip2-1.5.2.jar>central=
+seata-compressor-bzip2-1.5.2.pom>central=
