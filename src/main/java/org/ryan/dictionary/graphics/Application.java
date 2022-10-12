@@ -20,11 +20,10 @@ public class Application extends JFrame {
     public static int yOffset = 0;
     public static int xOffset = 0;
 
-    @SneakyThrows
     public Application() {
-        String version = "alpha0.3_6";
-        String title = "jdictionary " + version;
-        setTitle(title);
+        final String VERSION = "alpha0.3_7";
+        final String TITLE = "jdictionary " + VERSION;
+        setTitle(TITLE);
         setSize(1400, 800);
         setLocationRelativeTo(null);
         JSplitPane viewSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -37,28 +36,32 @@ public class Application extends JFrame {
         sideviewSplitter.setEnabled(false);
         sideviewSplitter.setDividerLocation(50);
         sideviewSplitter.setDividerSize(0);
-        sideviewSplitter.setTopComponent(new SideView.SideButtonView());
-        sideviewSplitter.setBottomComponent(new JScrollPane(new SideView()));
+        sideviewSplitter.setTopComponent(new ButtonView());
+        sideviewSplitter.setBottomComponent(getScrollPane());
         add(viewSplitter);
         addMouseWheelListener(new MouseHandler());
         setResizable(false);
         setVisible(true);
     }
 
-    public static void main(String[] args) throws IOException {
-        SideView.read();
-        app = new Application();
+    Component getScrollPane() {
+        JViewport viewport = new JViewport() {
+            @SneakyThrows
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(ImageIO.read(new File("res/bglist.png")), 0, 0, null);
+            }
+        };
+        JScrollPane jsp = new JScrollPane();
+        jsp.setViewport(viewport);
+        jsp.setViewportView(new ListView());
+
+        return jsp;
     }
 
-
-    @SneakyThrows
-    @Override
-    public void paint(Graphics g) {
-        g.drawImage(ImageIO.read(new File("res/bg.png")), 0, 0, null);
-
-        if (DictionaryView.asset != null) {
-            Application.GUI.forEach(Component::repaint);
-            DictionaryView.asset.paint(g);
-        }
+    public static void main(String[] args) throws IOException {
+        ListView.read();
+        app = new Application();
     }
 }

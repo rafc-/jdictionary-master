@@ -35,7 +35,7 @@ public class WordAsset {
     public void paint(Graphics g) {
         final int LINE_SPACING = 10;
         int x = 80 - Application.xOffset;
-        int y = 120 - Application.yOffset;
+        int y = 100 - Application.yOffset;
         int lines = 0;
 
         Font font = new Font("Times New Roman", Font.PLAIN, 18);

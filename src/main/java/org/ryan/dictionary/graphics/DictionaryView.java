@@ -1,11 +1,14 @@
 package org.ryan.dictionary.graphics;
 
+import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.ryan.dictionary.api.DictionaryProcessor;
 import org.ryan.dictionary.api.WordData;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 @Log
 public class DictionaryView extends JPanel {
@@ -46,5 +49,16 @@ public class DictionaryView extends JPanel {
     void display(WordAsset word) {
         asset = word;
         Application.app.repaint();
+    }
+
+    @SneakyThrows
+    @Override
+    public void paint(Graphics g) {
+        g.drawImage(ImageIO.read(new File("res/bg.png")), 0, 0, null);
+
+        if (asset != null) {
+            Application.GUI.forEach(Component::repaint);
+            asset.paint(g);
+        }
     }
 }
