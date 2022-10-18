@@ -6,10 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 @Log
@@ -27,7 +27,7 @@ public class ListView extends JPanel {
         JLabel[] labels = createLabels();
         for (JLabel label : labels) {
             this.add(label);
-            label.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+            label.setFont(new Font("Times New Roman", Font.PLAIN, 16));
             label.setForeground(Color.BLACK);
         }
     }
@@ -57,9 +57,10 @@ public class ListView extends JPanel {
         return labels;
     }
 
-    static void read() throws FileNotFoundException {
-        File file = new File("data/words.txt");
-        Scanner scanner = new Scanner(file);
+    static void read() {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("data/words.txt");
+        Scanner scanner = new Scanner(Objects.requireNonNull(is));
 
         while (scanner.hasNext()) {
             String words = scanner.next();

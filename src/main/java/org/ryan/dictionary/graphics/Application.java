@@ -7,10 +7,11 @@ import org.ryan.dictionary.graphics.control.MouseHandler;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Log
 public class Application extends JFrame {
@@ -21,7 +22,7 @@ public class Application extends JFrame {
     public static int xOffset = 0;
 
     public Application() {
-        final String VERSION = "alpha0.3_7";
+        final String VERSION = "alpha0.4";
         final String TITLE = "jdictionary " + VERSION;
         setTitle(TITLE);
         setSize(1400, 800);
@@ -50,7 +51,9 @@ public class Application extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(ImageIO.read(new File("res/bglist.png")), 0, 0, null);
+                ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+                InputStream is = classloader.getResourceAsStream("bglist_new.png");
+                g.drawImage(ImageIO.read(Objects.requireNonNull(is)), 0, 0, null);
             }
         };
         JScrollPane jsp = new JScrollPane();

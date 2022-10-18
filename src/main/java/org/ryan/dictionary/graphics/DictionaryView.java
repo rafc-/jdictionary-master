@@ -8,7 +8,8 @@ import org.ryan.dictionary.api.WordData;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.io.InputStream;
+import java.util.Objects;
 
 @Log
 public class DictionaryView extends JPanel {
@@ -54,7 +55,9 @@ public class DictionaryView extends JPanel {
     @SneakyThrows
     @Override
     public void paint(Graphics g) {
-        g.drawImage(ImageIO.read(new File("res/bg.png")), 0, 0, null);
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("bg.png");
+        g.drawImage(ImageIO.read(Objects.requireNonNull(is)), 0, 0, null);
 
         if (asset != null) {
             Application.GUI.forEach(Component::repaint);
